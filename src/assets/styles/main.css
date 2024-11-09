@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  .heading-xl {
+    @apply text-2xl font-bold;
+  }
+
+  .heading-l {
+    @apply text-lg font-bold leading-6;
+  }
+
+  .heading-m {
+    @apply text-base font-bold leading-5;
+  }
+
+  .heading-s {
+    @apply text-xs font-bold leading-4 tracking-widest;
+  }
+
+  .body-l {
+    @apply text-sm font-medium leading-6;
+  }
+
+  .body-xs-bold {
+    @apply text-xs font-bold;
+  }
+}
