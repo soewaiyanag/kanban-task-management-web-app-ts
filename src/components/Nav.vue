@@ -3,16 +3,19 @@ import { computed, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useBoardStore } from "@/stores/board";
 import { useThemeStore as useTheme } from "@/stores/theme";
+import { useSidebarStore } from "@/stores/sidebar";
 import Button from "./Button.vue";
 
 const boardStore = useBoardStore();
 const theme = useTheme();
+const sidebarStore = useSidebarStore();
 
 const { boardNames, currentBoardIndex, currentBoard } = storeToRefs(boardStore);
 const isBoardMenuOpen = ref(false);
 
 const isDarkTheme = computed(() => theme.currentTheme === "dark");
 const hasColumns = computed(() => !!currentBoard.value?.columns.length);
+const logoWidth = computed(() => sidebarStore.visible ? "md:w-[300px]" : "md:w-[209px]");
 </script>
 
 <template>
@@ -20,7 +23,8 @@ const hasColumns = computed(() => !!currentBoard.value?.columns.length);
     class="border-alice-blue dark:border-outer-space dark:bg-charcoal flex min-h-24 items-stretch border-b bg-white duration-200"
   >
     <picture
-      class="md:border-r-alice-blue md:dark:border-r-outer-space flex shrink-0 items-center pl-4 md:w-[300px] md:border-r md:pl-8"
+      :class="logoWidth"
+      class="md:border-r-alice-blue md:dark:border-r-outer-space flex shrink-0 items-center pl-4 transition-[width] duration-200 md:border-r md:pl-8"
     >
       <source
         :srcset="isDarkTheme ? '/assets/icons/logo-light.svg' : '/assets/icons/logo-dark.svg'"

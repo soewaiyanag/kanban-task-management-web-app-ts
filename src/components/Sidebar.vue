@@ -3,21 +3,22 @@ import HideSidebarIcon from "@/components/Icons/HideSidebarIcon.vue";
 import BoardMenu from "./BoardMenu.vue";
 import ThemeSwitcher from "./ThemeSwitcher.vue";
 import { ref } from "vue";
+import { useSidebarStore } from "@/stores/sidebar";
 
-const visible = ref<boolean>(true);
+const sidebarStore = useSidebarStore();
 const showSlideOpen = ref<boolean>(false);
 
 const showSlide = () => {
-  visible.value = true;
+  sidebarStore.visible = true;
   showSlideOpen.value = false;
 };
 
 const hideSlide = () => {
-  visible.value = false;
+  sidebarStore.visible = false;
 };
 
 const handleTransitionEnd = () => {
-  if (!visible.value) {
+  if (!sidebarStore.visible) {
     showSlideOpen.value = true;
   }
 };
@@ -28,7 +29,7 @@ const handleTransitionEnd = () => {
     class="sticky top-[calc(100vh-6rem+1px)] min-h-[calc(100vh-6rem+1px)]"
   >
     <div
-      :class="visible ? 'w-[300px] px-6 opacity-100' : 'w-0 opacity-0'"
+      :class="sidebarStore.visible ? 'w-[300px] px-6 opacity-100' : 'w-0 opacity-0'"
       class="border-r-alice-blue dark:border-r-outer-space dark:bg-charcoal -mt-px flex min-h-full flex-col overflow-hidden border-r bg-white transition-all duration-200"
       @transitionend="handleTransitionEnd"
     >
@@ -46,10 +47,10 @@ const handleTransitionEnd = () => {
     </div>
     <button
       v-show="showSlideOpen"
-      class="bg-purple-heart hover:bg-lavender-blue absolute bottom-8 left-0 flex w-14 animate-slideRight justify-center rounded-r-3xl py-5 transition-all"
+      class="bg-purple-heart hover:bg-lavender-blue absolute bottom-8 left-0 flex h-[48px] w-14 animate-slideRight items-center justify-center rounded-r-[100px] transition-colors"
       @click="showSlide"
     >
-      <img alt="show sidebar" class="-ml-2" src="/assets/icons/icon-show-sidebar.svg" />
+      <img alt="show sidebar" src="/assets/icons/icon-show-sidebar.svg" />
     </button>
   </div>
 </template>
