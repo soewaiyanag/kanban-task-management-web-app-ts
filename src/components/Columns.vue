@@ -10,7 +10,7 @@ const { currentBoard } = storeToRefs(boardStore);
 <template>
   <div
     v-if="!currentBoard.columns.length"
-    class="flex min-h-[calc(100vh-6rem+1px)] flex-col items-center justify-center gap-6 bg-baby-blue px-6 dark:bg-gunmetal"
+    class="flex min-h-[calc(100vh-4rem+1px)] flex-col items-center justify-center gap-6 bg-baby-blue px-6 dark:bg-gunmetal md:min-h-[calc(100vh-6rem+1px)]"
   >
     <p class="heading-l text-center text-battleship-grey">
       This board is empty. Create a new column to get started.
@@ -24,7 +24,7 @@ const { currentBoard } = storeToRefs(boardStore);
   </div>
   <div
     v-else
-    class="grid max-h-[calc(100vh-6rem+1px)] min-w-0 grid-flow-col items-start justify-start gap-5 overflow-scroll p-6"
+    class="grid max-h-[calc(100vh-4rem+1px)] min-w-0 grid-flow-col items-start justify-start gap-5 overflow-scroll p-6 md:max-h-[calc(100vh-6rem+1px)]"
   >
     <Column
       v-for="({ name, tasks }, index) in currentBoard.columns"
