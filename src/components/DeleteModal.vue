@@ -34,7 +34,7 @@ function confirm() {
       @click="boardStore.closeDelete()"
     >
       <div
-        class="w-[480px] rounded-[6px] bg-white p-8 dark:bg-charcoal"
+        class="w-full rounded-[6px] bg-white p-6 dark:bg-charcoal md:w-[480px] md:p-8"
         @click.stop
       >
         <h2 class="heading-l mb-6 text-red-orange">{{ title }}</h2>

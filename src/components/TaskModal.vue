@@ -20,7 +20,7 @@ const completedCount = computed(
       @click="boardStore.closeTask()"
     >
       <div
-        class="relative w-[480px] max-h-[90vh] overflow-y-auto rounded-[6px] bg-white p-8 dark:bg-charcoal"
+        class="relative w-full max-h-[90vh] overflow-y-auto rounded-[6px] bg-white p-6 dark:bg-charcoal md:w-[480px] md:p-8"
         @click.stop
       >
         <!-- Header -->

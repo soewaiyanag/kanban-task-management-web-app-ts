@@ -94,15 +94,15 @@ export const useBoardStore = defineStore("board", () => {
     currentBoardIndex.value = boards.value.length - 1;
   }
 
-  function saveBoard(name: string, columnNames: string[]) {
+  function saveBoard(name: string, columnMappings: { originalName: string; name: string }[]) {
     const board = boards.value[currentBoardIndex.value];
     board.name = name;
-    const existing = board.columns;
-    board.columns = columnNames.map((colName, i) => {
-      if (existing[i]) {
-        return { name: colName, tasks: existing[i].tasks };
-      }
-      return { name: colName, tasks: [] };
+    const existingByName = new Map(board.columns.map((col) => [col.name, col]));
+    board.columns = columnMappings.map(({ originalName, name: newName }) => {
+      const existing = existingByName.get(originalName);
+      return existing
+        ? { name: newName, tasks: existing.tasks }
+        : { name: newName, tasks: [] };
     });
   }
 

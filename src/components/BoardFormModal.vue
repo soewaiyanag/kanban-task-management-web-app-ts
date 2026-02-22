@@ -8,9 +8,13 @@ const { boardFormMode, currentBoard } = storeToRefs(boardStore);
 
 const isEdit = computed(() => boardFormMode.value === "edit");
 
+type FormColumn = { id: number; originalName: string; name: string };
+
+let nextId = 0;
+
 const form = reactive({
   name: "",
-  columns: [] as string[],
+  columns: [] as FormColumn[],
 });
 
 watch(
@@ -18,17 +22,24 @@ watch(
   (mode) => {
     if (mode === "add") {
       form.name = "";
-      form.columns = ["Todo", "Doing"];
+      form.columns = [
+        { id: nextId++, originalName: "", name: "Todo" },
+        { id: nextId++, originalName: "", name: "Doing" },
+      ];
     } else if (mode === "edit" && currentBoard.value) {
       form.name = currentBoard.value.name;
-      form.columns = currentBoard.value.columns.map((c) => c.name);
+      form.columns = currentBoard.value.columns.map((c) => ({
+        id: nextId++,
+        originalName: c.name,
+        name: c.name,
+      }));
     }
   },
   { immediate: true },
 );
 
 function addColumn() {
-  form.columns.push("");
+  form.columns.push({ id: nextId++, originalName: "", name: "" });
 }
 
 function removeColumn(index: number) {
@@ -37,11 +48,13 @@ function removeColumn(index: number) {
 
 function submit() {
   if (!form.name.trim()) return;
-  const cols = form.columns.filter((c) => c.trim());
+  const cols = form.columns
+    .filter((c) => c.name.trim())
+    .map((c) => ({ originalName: c.originalName, name: c.name.trim() }));
   if (isEdit.value) {
     boardStore.saveBoard(form.name.trim(), cols);
   } else {
-    boardStore.addBoard(form.name.trim(), cols);
+    boardStore.addBoard(form.name.trim(), cols.map((c) => c.name));
   }
   boardStore.closeBoardForm();
 }
@@ -55,7 +68,7 @@ function submit() {
       @click="boardStore.closeBoardForm()"
     >
       <div
-        class="w-[480px] max-h-[90vh] overflow-y-auto rounded-[6px] bg-white p-8 dark:bg-charcoal"
+        class="w-full max-h-[90vh] overflow-y-auto rounded-[6px] bg-white p-6 dark:bg-charcoal md:w-[480px] md:p-8"
         @click.stop
       >
         <!-- Heading -->
@@ -83,12 +96,12 @@ function submit() {
           </label>
           <div class="space-y-3">
             <div
-              v-for="(_, i) in form.columns"
-              :key="i"
+              v-for="(col, i) in form.columns"
+              :key="col.id"
               class="flex items-center gap-4"
             >
               <input
-                v-model="form.columns[i]"
+                v-model="col.name"
                 type="text"
                 class="body-l h-10 flex-1 rounded-[4px] border border-[rgba(130,143,163,0.25)] bg-white px-4 text-midnight placeholder:opacity-25 focus:border-purple-heart focus:outline-none dark:bg-charcoal dark:text-white dark:placeholder:text-white"
               />
