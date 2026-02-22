@@ -1,4 +1,4 @@
-import type { Board } from "@/stores/board";
+import type { Board } from "@/types/board";
 
 export const initialState: Board[] = [
   {
@@ -334,7 +334,7 @@ export const initialState: Board[] = [
           {
             title: "Share on Show HN",
             description: "",
-            status: "",
+            status: "Todo",
             subtasks: [
               {
                 title: "Draft out HN post",
@@ -353,7 +353,7 @@ export const initialState: Board[] = [
           {
             title: "Write launch article to publish on multiple channels",
             description: "",
-            status: "",
+            status: "Todo",
             subtasks: [
               {
                 title: "Write article",
@@ -394,7 +394,7 @@ export const initialState: Board[] = [
           {
             title: "Launch version one",
             description: "",
-            status: "",
+            status: "Now",
             subtasks: [
               {
                 title: "Launch privately to our waitlist",
@@ -410,7 +410,7 @@ export const initialState: Board[] = [
             title: "Review early feedback and plan next steps for roadmap",
             description:
               "Beyond the initial launch, we're keeping the initial roadmap completely empty. This meeting will help us plan out our next steps based on actual customer feedback.",
-            status: "",
+            status: "Now",
             subtasks: [
               {
                 title: "Interview 10 customers",

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { Subtask } from "@/stores/board";
+import type { Subtask, Task } from "@/types/board";
 
-defineProps(["task"]);
+defineProps<{ task: Task }>();
 </script>
 
 <template>

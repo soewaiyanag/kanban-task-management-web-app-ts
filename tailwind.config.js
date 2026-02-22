@@ -20,7 +20,7 @@ export default {
         black: "#000000",
       },
       animation: {
-        slideRight: "slideRight 1s cubic-bezier(0.4, 0, 0.6, 1) 1",
+        slideRight: "slideRight 1s cubic-bezier(0.22, 0.68, 0, 1) 1",
       },
       keyframes: {
         slideRight: {

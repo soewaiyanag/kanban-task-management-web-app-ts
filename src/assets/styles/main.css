@@ -9,27 +9,33 @@
 }
 
 @layer components {
+  /* Heading (XL) — 24px, Bold 700, 100% line-height */
   .heading-xl {
-    @apply text-2xl font-bold;
+    @apply text-2xl font-bold leading-none;
   }
 
+  /* Heading (L) — 18px, Bold 700, 100% line-height */
   .heading-l {
-    @apply text-lg font-bold leading-6;
+    @apply text-lg font-bold leading-none;
   }
 
+  /* Heading (M) — 15px, Bold 700, 100% line-height */
   .heading-m {
-    @apply text-base font-bold leading-5;
+    @apply text-[15px] font-bold leading-none;
   }
 
+  /* Heading (S) — 12px, Bold 700, 100% line-height, 2.4px letter-spacing */
   .heading-s {
-    @apply text-xs font-bold leading-4 tracking-widest;
+    @apply text-xs font-bold leading-none tracking-[2.4px];
   }
 
+  /* Body (L) — 13px, Medium 500, 23px line-height */
   .body-l {
-    @apply text-sm font-medium leading-6;
+    @apply text-[13px] font-medium leading-[23px];
   }
 
-  .body-xs-bold {
-    @apply text-xs font-bold;
+  /* Body (M) — 12px, Bold 700, 100% line-height */
+  .body-m {
+    @apply text-xs font-bold leading-none;
   }
 }

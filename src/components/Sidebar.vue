@@ -25,7 +25,7 @@ const handleTransitionEnd = () => {
 
 <template>
   <div
-    class="justify-content-center sticky top-[calc(100vh-6rem+1px)] min-h-[calc(100vh-6rem+1px)]"
+    class="justify-center sticky top-[calc(100vh-6rem+1px)] min-h-[calc(100vh-6rem+1px)]"
   >
     <div
       :class="visible ? 'w-[17.5rem] px-6 opacity-100' : 'w-0 opacity-0'"
@@ -46,7 +46,7 @@ const handleTransitionEnd = () => {
     </div>
     <button
       v-show="showSlideOpen"
-      class="bg-purple-heart hover:bg-lavender-blue absolute bottom-8 left-0 flex w-14 animate-[slideRight_1s_cubic-bezier(0.22,0.68,0,1)_1] justify-center rounded-r-3xl py-5 transition-all"
+      class="bg-purple-heart hover:bg-lavender-blue absolute bottom-8 left-0 flex w-14 animate-slideRight justify-center rounded-r-3xl py-5 transition-all"
       @click="showSlide"
     >
       <img alt="show sidebar" class="-ml-2" src="/assets/icons/icon-show-sidebar.svg" />

@@ -5,15 +5,12 @@ import { useBoardStore } from "@/stores/board";
 import { useThemeStore as useTheme } from "@/stores/theme";
 import Button from "./Button.vue";
 
-// Composable
 const boardStore = useBoardStore();
 const theme = useTheme();
 
-// States
 const { boardNames, currentBoardIndex } = storeToRefs(boardStore);
 const isBoardMenuOpen = ref(false);
 
-// Computed
 const isDarkTheme = computed(() => theme.currentTheme === "dark");
 </script>
 
@@ -31,7 +28,10 @@ const isDarkTheme = computed(() => theme.currentTheme === "dark");
       <img alt="logo" class="my-auto" src="/assets/icons/logo-mobile.svg" />
     </picture>
     <div class="flex w-full items-center justify-between">
-      <div class="flex items-center gap-3">
+      <button
+        class="flex items-center gap-3 md:cursor-default"
+        @click="isBoardMenuOpen = !isBoardMenuOpen"
+      >
         <h1 class="text-midnight text-xl font-semibold md:text-2xl dark:text-white">
           {{ boardNames[currentBoardIndex] }}
         </h1>
@@ -44,7 +44,7 @@ const isDarkTheme = computed(() => theme.currentTheme === "dark");
           alt="open or hide board menu"
           class="mt-1 h-2.5 w-3.5 md:hidden"
         />
-      </div>
+      </button>
       <div class="flex items-center gap-4">
         <Button>
           <img

@@ -1,28 +1,9 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { initialState } from "@/constants/initialState";
+import type { Board, Task } from "@/types/board";
 
-export interface Subtask {
-  title: string;
-  isCompleted: boolean;
-}
-
-export interface Task {
-  title: string;
-  description: string;
-  status: string;
-  subtasks: Subtask[];
-}
-
-export interface Column {
-  name: string;
-  tasks: Task[];
-}
-
-export interface Board {
-  name: string;
-  columns: Column[];
-}
+export type { Subtask, Task, Column, Board } from "@/types/board";
 
 export const useBoardStore = defineStore("board", () => {
   // Reactive state properties
@@ -42,24 +23,26 @@ export const useBoardStore = defineStore("board", () => {
   }
 
   function updateTask({
+    columnIndex,
     taskIndex,
     updatedTask,
   }: {
+    columnIndex: number;
     taskIndex: number;
     updatedTask: Partial<Task>;
   }) {
     const board = boards.value[currentBoardIndex.value];
-    for (const column of board.columns) {
-      const task = column.tasks[taskIndex];
-      if (task) {
-        Object.assign(task, updatedTask);
-        break;
-      }
+    const task = board.columns[columnIndex]?.tasks[taskIndex];
+    if (task) {
+      Object.assign(task, updatedTask);
     }
   }
 
   function addTask(task: Task) {
-    boards.value[currentBoardIndex.value].columns[0].tasks.push(task);
+    const board = boards.value[currentBoardIndex.value];
+    const targetColumn =
+      board.columns.find((col) => col.name === task.status) ?? board.columns[0];
+    targetColumn.tasks.push(task);
   }
 
   return {
