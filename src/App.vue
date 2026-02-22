@@ -9,7 +9,7 @@ import DeleteModal from "./components/DeleteModal.vue";
 </script>
 
 <template>
-  <div class="bg-baby-blue dark:bg-gunmetal relative transition-colors">
+  <div class="bg-baby-blue dark:bg-gunmetal relative min-h-screen transition-colors">
     <Nav />
     <div class="grid grid-cols-1 md:grid-cols-[auto_1fr]">
       <Sidebar class="hidden md:flex" />
