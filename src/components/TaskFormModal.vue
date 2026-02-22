@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { reactive, computed, watch } from "vue";
+import { reactive, computed, watch, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useBoardStore } from "@/stores/board";
 
@@ -7,6 +7,8 @@ const boardStore = useBoardStore();
 const { taskFormMode, selectedTask, currentBoard } = storeToRefs(boardStore);
 
 const isEdit = computed(() => taskFormMode.value === "edit");
+const submitted = ref(false);
+const titleInput = ref<HTMLInputElement | null>(null);
 
 const form = reactive({
   title: "",
@@ -18,6 +20,7 @@ const form = reactive({
 watch(
   taskFormMode,
   (mode) => {
+    submitted.value = false;
     if (mode === "add") {
       form.title = "";
       form.description = "";
@@ -45,13 +48,17 @@ function removeSubtask(index: number) {
 }
 
 function submit() {
-  if (!form.title.trim()) return;
-  const subtasks = form.subtasks.filter((s) => s.title.trim());
+  submitted.value = true;
+  if (!form.title.trim()) {
+    titleInput.value?.focus();
+    return;
+  }
+  if (form.subtasks.some((s) => !s.title.trim())) return;
   if (isEdit.value && selectedTask.value) {
     Object.assign(selectedTask.value, {
       title: form.title,
       description: form.description,
-      subtasks,
+      subtasks: form.subtasks,
       status: form.status,
     });
   } else {
@@ -59,7 +66,7 @@ function submit() {
       title: form.title,
       description: form.description,
       status: form.status,
-      subtasks: subtasks.map((s) => ({ title: s.title, isCompleted: false })),
+      subtasks: form.subtasks.map((s) => ({ title: s.title, isCompleted: false })),
     });
   }
   boardStore.closeTaskForm();
@@ -86,10 +93,12 @@ function submit() {
         <div>
           <label class="body-m mb-2 block text-battleship-grey">Title</label>
           <input
+            ref="titleInput"
             v-model="form.title"
             type="text"
             :placeholder="isEdit ? '' : 'e.g. Take coffee break'"
-            class="body-l h-10 w-full rounded-[4px] border border-[rgba(130,143,163,0.25)] bg-white px-4 text-midnight placeholder:opacity-25 focus:border-purple-heart focus:outline-none dark:bg-charcoal dark:text-white dark:placeholder:text-white"
+            :class="submitted && !form.title.trim() ? 'border-red-orange' : 'border-[rgba(130,143,163,0.25)]'"
+            class="body-l h-10 w-full rounded-[4px] border bg-white px-4 text-midnight placeholder:opacity-25 focus:border-purple-heart focus:outline-none dark:bg-charcoal dark:text-white dark:placeholder:text-white"
           />
         </div>
 
@@ -113,18 +122,32 @@ function submit() {
               :key="i"
               class="flex items-center gap-4"
             >
-              <input
-                v-model="subtask.title"
-                type="text"
-                :placeholder="i === 0 ? 'e.g. Make coffee' : 'e.g. Drink coffee & smile'"
-                class="body-l h-10 flex-1 rounded-[4px] border border-[rgba(130,143,163,0.25)] bg-white px-4 text-midnight placeholder:opacity-25 focus:border-purple-heart focus:outline-none dark:bg-charcoal dark:text-white dark:placeholder:text-white"
-              />
+              <div class="relative flex-1">
+                <input
+                  v-model="subtask.title"
+                  type="text"
+                  :placeholder="i === 0 ? 'e.g. Make coffee' : 'e.g. Drink coffee & smile'"
+                  :class="submitted && !subtask.title.trim() ? 'border-red-orange pr-32' : 'border-[rgba(130,143,163,0.25)]'"
+                  class="body-l h-10 w-full rounded-[4px] border bg-white px-4 text-midnight placeholder:opacity-25 focus:border-purple-heart focus:outline-none dark:bg-charcoal dark:text-white dark:placeholder:text-white"
+                />
+                <span
+                  v-if="submitted && !subtask.title.trim()"
+                  class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 body-l text-red-orange"
+                >
+                  Can't be empty
+                </span>
+              </div>
               <button
                 type="button"
-                class="shrink-0 opacity-60 transition-opacity hover:opacity-100"
+                :class="submitted && !subtask.title.trim() ? 'opacity-100' : 'opacity-60 hover:opacity-100'"
+                class="shrink-0 transition-opacity"
                 @click="removeSubtask(i)"
               >
-                <img alt="remove subtask" src="/assets/icons/icon-cross.svg" />
+                <img
+                  alt="remove subtask"
+                  src="/assets/icons/icon-cross.svg"
+                  :class="submitted && !subtask.title.trim() ? '[filter:brightness(0)_saturate(100%)_invert(43%)_sepia(97%)_saturate(600%)_hue-rotate(315deg)_brightness(95%)]' : ''"
+                />
               </button>
             </div>
           </div>
