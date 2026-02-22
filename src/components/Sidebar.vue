@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { ref } from "vue";
 import HideSidebarIcon from "@/components/Icons/HideSidebarIcon.vue";
 import BoardMenu from "./BoardMenu.vue";
 import ThemeSwitcher from "./ThemeSwitcher.vue";
+import { ref } from "vue";
 
-const visible = ref<boolean>(false);
-const showSlideOpen = ref<boolean>(true);
+const visible = ref<boolean>(true);
+const showSlideOpen = ref<boolean>(false);
 
 const showSlide = () => {
   visible.value = true;
@@ -25,17 +25,17 @@ const handleTransitionEnd = () => {
 
 <template>
   <div
-    class="justify-center sticky top-[calc(100vh-6rem+1px)] min-h-[calc(100vh-6rem+1px)]"
+    class="sticky top-[calc(100vh-6rem+1px)] min-h-[calc(100vh-6rem+1px)]"
   >
     <div
-      :class="visible ? 'w-[17.5rem] px-6 opacity-100' : 'w-0 opacity-0'"
+      :class="visible ? 'w-[300px] px-6 opacity-100' : 'w-0 opacity-0'"
       class="border-r-alice-blue dark:border-r-outer-space dark:bg-charcoal -mt-px flex min-h-full flex-col overflow-hidden border-r bg-white transition-all duration-200"
       @transitionend="handleTransitionEnd"
     >
       <BoardMenu />
       <ThemeSwitcher class="mt-auto" />
       <button
-        class="hover:bg-purple-heart/10 group my-8 -ml-12 flex items-center gap-4 text-nowrap rounded-r-3xl py-3.5 pl-12 text-left transition-colors"
+        class="hover:bg-purple-heart/10 group my-8 -ml-6 flex items-center gap-4 text-nowrap rounded-r-3xl py-3.5 pl-6 text-left transition-colors"
         @click="hideSlide"
       >
         <HideSidebarIcon class="fill-battleship-grey group-hover:fill-purple-heart" />

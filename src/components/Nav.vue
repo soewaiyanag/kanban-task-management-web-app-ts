@@ -8,18 +8,19 @@ import Button from "./Button.vue";
 const boardStore = useBoardStore();
 const theme = useTheme();
 
-const { boardNames, currentBoardIndex } = storeToRefs(boardStore);
+const { boardNames, currentBoardIndex, currentBoard } = storeToRefs(boardStore);
 const isBoardMenuOpen = ref(false);
 
 const isDarkTheme = computed(() => theme.currentTheme === "dark");
+const hasColumns = computed(() => !!currentBoard.value?.columns.length);
 </script>
 
 <template>
   <nav
-    class="border-alice-blue dark:border-outer-space dark:bg-charcoal flex min-h-24 items-stretch space-x-8 border-b bg-white px-6 duration-200"
+    class="border-alice-blue dark:border-outer-space dark:bg-charcoal flex min-h-24 items-stretch border-b bg-white duration-200"
   >
     <picture
-      class="md:border-r-alice-blue md:dark:border-r-outer-space flex md:min-w-64 md:border-r"
+      class="md:border-r-alice-blue md:dark:border-r-outer-space flex shrink-0 items-center pl-4 md:w-[300px] md:border-r md:pl-8"
     >
       <source
         :srcset="isDarkTheme ? '/assets/icons/logo-light.svg' : '/assets/icons/logo-dark.svg'"
@@ -27,7 +28,7 @@ const isDarkTheme = computed(() => theme.currentTheme === "dark");
       />
       <img alt="logo" class="my-auto" src="/assets/icons/logo-mobile.svg" />
     </picture>
-    <div class="flex w-full items-center justify-between">
+    <div class="flex flex-1 items-center justify-between px-4 md:px-6">
       <button
         class="flex items-center gap-3 md:cursor-default"
         @click="isBoardMenuOpen = !isBoardMenuOpen"
@@ -46,15 +47,13 @@ const isDarkTheme = computed(() => theme.currentTheme === "dark");
         />
       </button>
       <div class="flex items-center gap-4">
-        <Button>
+        <Button :disabled="!hasColumns">
           <img
             alt="add new task"
             class="h-3 w-3 lg:h-2.5 lg:w-2.5"
             src="/assets/icons/icon-add-task-mobile.svg"
           />
-          <span class="hidden text-nowrap text-base font-medium text-white lg:inline-block"
-            >Add New Task</span
-          >
+          <span class="hidden text-nowrap heading-m text-white lg:inline-block">Add New Task</span>
         </Button>
         <button>
           <img
