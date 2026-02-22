@@ -3,6 +3,7 @@ import Nav from "./components/Nav.vue";
 import Sidebar from "./components/Sidebar.vue";
 import Columns from "./components/Columns.vue";
 import TaskModal from "./components/TaskModal.vue";
+import TaskFormModal from "./components/TaskFormModal.vue";
 </script>
 
 <template>
@@ -13,5 +14,6 @@ import TaskModal from "./components/TaskModal.vue";
       <Columns />
     </div>
     <TaskModal />
+    <TaskFormModal />
   </div>
 </template>

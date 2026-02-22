@@ -10,6 +10,7 @@ export const useBoardStore = defineStore("board", () => {
   const boards = ref<Board[]>(JSON.parse(JSON.stringify(initialState)));
   const currentBoardIndex = ref<number>(0);
   const selectedTask = ref<Task | null>(null);
+  const taskFormMode = ref<"add" | "edit" | null>(null);
 
   // Computed properties for getters
   const boardNames = computed(() => boards.value.map((board) => board.name));
@@ -39,6 +40,18 @@ export const useBoardStore = defineStore("board", () => {
     }
   }
 
+  function openAddTask() {
+    taskFormMode.value = "add";
+  }
+
+  function openEditTask() {
+    taskFormMode.value = "edit";
+  }
+
+  function closeTaskForm() {
+    taskFormMode.value = null;
+  }
+
   function openTask(task: Task) {
     selectedTask.value = task;
   }
@@ -58,10 +71,14 @@ export const useBoardStore = defineStore("board", () => {
     boards,
     currentBoardIndex,
     selectedTask,
+    taskFormMode,
     boardNames,
     currentBoard,
     currentTasks,
     updateCurrentBoardIndex,
+    openAddTask,
+    openEditTask,
+    closeTaskForm,
     openTask,
     closeTask,
     updateTask,

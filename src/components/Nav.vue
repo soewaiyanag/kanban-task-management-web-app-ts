@@ -51,7 +51,7 @@ const logoWidth = computed(() => sidebarStore.visible ? "md:w-[300px]" : "md:w-[
         />
       </button>
       <div class="flex items-center gap-4">
-        <Button :disabled="!hasColumns">
+        <Button :disabled="!hasColumns" @click="boardStore.openAddTask()">
           <img
             alt="add new task"
             class="h-3 w-3 lg:h-2.5 lg:w-2.5"

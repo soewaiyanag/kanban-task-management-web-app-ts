@@ -25,7 +25,7 @@ const completedCount = computed(
         <!-- Header -->
         <div class="flex items-start justify-between gap-6">
           <h2 class="heading-l text-midnight dark:text-white">{{ task.title }}</h2>
-          <button class="mt-1 shrink-0">
+          <button class="mt-1 shrink-0" @click="boardStore.openEditTask()">
             <img alt="task options" src="/assets/icons/icon-vertical-ellipsis.svg" />
           </button>
         </div>
