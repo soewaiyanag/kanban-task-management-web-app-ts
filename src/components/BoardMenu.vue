@@ -13,7 +13,7 @@ const handleBoardClick = (index: number) => {
 };
 
 const createNewBoard = () => {
-  console.log("Create new board clicked");
+  boardStore.openAddBoard();
 };
 </script>
 

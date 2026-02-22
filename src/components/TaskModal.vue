@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useBoardStore } from "@/stores/board";
 
 const boardStore = useBoardStore();
 const { selectedTask: task, currentBoard } = storeToRefs(boardStore);
+const isEllipsisOpen = ref(false);
 
 const completedCount = computed(
   () => task.value?.subtasks.filter((s) => s.isCompleted).length ?? 0,
@@ -25,9 +26,33 @@ const completedCount = computed(
         <!-- Header -->
         <div class="flex items-start justify-between gap-6">
           <h2 class="heading-l text-midnight dark:text-white">{{ task.title }}</h2>
-          <button class="mt-1 shrink-0" @click="boardStore.openEditTask()">
-            <img alt="task options" src="/assets/icons/icon-vertical-ellipsis.svg" />
-          </button>
+          <div class="relative mt-1 shrink-0">
+            <div
+              v-if="isEllipsisOpen"
+              class="fixed inset-0"
+              @click="isEllipsisOpen = false"
+            />
+            <button class="relative z-10" @click="isEllipsisOpen = !isEllipsisOpen">
+              <img alt="task options" src="/assets/icons/icon-vertical-ellipsis.svg" />
+            </button>
+            <div
+              v-if="isEllipsisOpen"
+              class="absolute right-0 top-full z-10 mt-4 w-48 rounded-lg bg-white py-4 shadow-[0_10px_20px_rgba(54,78,126,0.25)] dark:bg-gunmetal"
+            >
+              <button
+                class="body-l w-full px-4 py-2 text-left text-battleship-grey transition-colors hover:text-midnight dark:hover:text-white"
+                @click="() => { boardStore.openEditTask(); isEllipsisOpen = false; }"
+              >
+                Edit Task
+              </button>
+              <button
+                class="body-l w-full px-4 py-2 text-left text-red-orange transition-colors hover:text-pink-salmon"
+                @click="() => { boardStore.openDeleteTask(); isEllipsisOpen = false; }"
+              >
+                Delete Task
+              </button>
+            </div>
+          </div>
         </div>
 
         <!-- Description -->

@@ -12,6 +12,7 @@ const sidebarStore = useSidebarStore();
 
 const { boardNames, currentBoardIndex, currentBoard } = storeToRefs(boardStore);
 const isBoardMenuOpen = ref(false);
+const isEllipsisOpen = ref(false);
 
 const isDarkTheme = computed(() => theme.currentTheme === "dark");
 const hasColumns = computed(() => !!currentBoard.value?.columns.length);
@@ -59,13 +60,37 @@ const logoWidth = computed(() => sidebarStore.visible ? "md:w-[300px]" : "md:w-[
           />
           <span class="hidden text-nowrap heading-m text-white lg:inline-block">Add New Task</span>
         </Button>
-        <button>
-          <img
-            alt="vertical ellipsis"
-            class="cursor-pointer"
-            src="/assets/icons/icon-vertical-ellipsis.svg"
+        <div class="relative">
+          <div
+            v-if="isEllipsisOpen"
+            class="fixed inset-0"
+            @click="isEllipsisOpen = false"
           />
-        </button>
+          <button class="relative z-10" @click="isEllipsisOpen = !isEllipsisOpen">
+            <img
+              alt="board options"
+              class="cursor-pointer"
+              src="/assets/icons/icon-vertical-ellipsis.svg"
+            />
+          </button>
+          <div
+            v-if="isEllipsisOpen"
+            class="absolute right-0 top-full z-10 mt-4 w-48 rounded-lg bg-white py-4 shadow-[0_10px_20px_rgba(54,78,126,0.25)] dark:bg-gunmetal"
+          >
+            <button
+              class="body-l w-full px-4 py-2 text-left text-battleship-grey transition-colors hover:text-midnight dark:hover:text-white"
+              @click="() => { boardStore.openEditBoard(); isEllipsisOpen = false; }"
+            >
+              Edit Board
+            </button>
+            <button
+              class="body-l w-full px-4 py-2 text-left text-red-orange transition-colors hover:text-pink-salmon"
+              @click="() => { boardStore.openDeleteBoard(); isEllipsisOpen = false; }"
+            >
+              Delete Board
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </nav>

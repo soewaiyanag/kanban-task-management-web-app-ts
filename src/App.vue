@@ -4,6 +4,8 @@ import Sidebar from "./components/Sidebar.vue";
 import Columns from "./components/Columns.vue";
 import TaskModal from "./components/TaskModal.vue";
 import TaskFormModal from "./components/TaskFormModal.vue";
+import BoardFormModal from "./components/BoardFormModal.vue";
+import DeleteModal from "./components/DeleteModal.vue";
 </script>
 
 <template>
@@ -15,5 +17,7 @@ import TaskFormModal from "./components/TaskFormModal.vue";
     </div>
     <TaskModal />
     <TaskFormModal />
+    <BoardFormModal />
+    <DeleteModal />
   </div>
 </template>
