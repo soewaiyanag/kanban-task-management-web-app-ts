@@ -2,6 +2,7 @@
 import Nav from "./components/Nav.vue";
 import Sidebar from "./components/Sidebar.vue";
 import Columns from "./components/Columns.vue";
+import TaskModal from "./components/TaskModal.vue";
 </script>
 
 <template>
@@ -11,6 +12,6 @@ import Columns from "./components/Columns.vue";
       <Sidebar class="hidden md:flex" />
       <Columns />
     </div>
-    <!--    <Modal />-->
+    <TaskModal />
   </div>
 </template>

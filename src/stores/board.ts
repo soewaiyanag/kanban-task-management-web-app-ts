@@ -9,6 +9,7 @@ export const useBoardStore = defineStore("board", () => {
   // Reactive state properties
   const boards = ref<Board[]>(JSON.parse(JSON.stringify(initialState)));
   const currentBoardIndex = ref<number>(0);
+  const selectedTask = ref<Task | null>(null);
 
   // Computed properties for getters
   const boardNames = computed(() => boards.value.map((board) => board.name));
@@ -38,6 +39,14 @@ export const useBoardStore = defineStore("board", () => {
     }
   }
 
+  function openTask(task: Task) {
+    selectedTask.value = task;
+  }
+
+  function closeTask() {
+    selectedTask.value = null;
+  }
+
   function addTask(task: Task) {
     const board = boards.value[currentBoardIndex.value];
     const targetColumn =
@@ -48,10 +57,13 @@ export const useBoardStore = defineStore("board", () => {
   return {
     boards,
     currentBoardIndex,
+    selectedTask,
     boardNames,
     currentBoard,
     currentTasks,
     updateCurrentBoardIndex,
+    openTask,
+    closeTask,
     updateTask,
     addTask,
   };
