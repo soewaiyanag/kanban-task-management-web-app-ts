@@ -6,8 +6,22 @@ import type { Board, Task } from "@/types/board";
 export type { Subtask, Task, Column, Board } from "@/types/board";
 
 export const useBoardStore = defineStore("board", () => {
+  // Ensure every task has a stable id (initialState has none)
+  function seedIds(rawBoards: Board[]): Board[] {
+    return rawBoards.map((board) => ({
+      ...board,
+      columns: board.columns.map((col) => ({
+        ...col,
+        tasks: col.tasks.map((task) => ({
+          ...task,
+          id: task.id ?? crypto.randomUUID(),
+        })),
+      })),
+    }));
+  }
+
   // Reactive state properties
-  const boards = ref<Board[]>(JSON.parse(JSON.stringify(initialState)));
+  const boards = ref<Board[]>(seedIds(JSON.parse(JSON.stringify(initialState))));
   const currentBoardIndex = ref<number>(0);
   const selectedTask = ref<Task | null>(null);
   const taskFormMode = ref<"add" | "edit" | null>(null);
@@ -69,7 +83,7 @@ export const useBoardStore = defineStore("board", () => {
     const board = boards.value[currentBoardIndex.value];
     const targetColumn =
       board.columns.find((col) => col.name === task.status) ?? board.columns[0];
-    targetColumn.tasks.push(task);
+    targetColumn.tasks.push({ ...task, id: task.id ?? crypto.randomUUID() });
   }
 
   // Board form

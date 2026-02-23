@@ -27,10 +27,8 @@ const { currentBoard } = storeToRefs(boardStore);
     class="grid max-h-[calc(100vh-4rem+1px)] min-w-0 grid-flow-col items-start justify-start gap-5 overflow-scroll p-6 md:max-h-[calc(100vh-6rem+1px)]"
   >
     <Column
-      v-for="({ name, tasks }, index) in currentBoard.columns"
+      v-for="(_, index) in currentBoard.columns"
       :key="index"
-      :name
-      :tasks
       :index
     />
     <!-- + New Column card -->
