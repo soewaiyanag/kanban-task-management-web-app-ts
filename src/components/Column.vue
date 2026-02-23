@@ -50,12 +50,14 @@ function onAdd(evt: { newIndex?: number }) {
         <TaskCard v-for="task in tasks" :key="task.id ?? task.title" :task />
       </VueDraggable>
       <!-- Placeholder sits outside VueDraggable so SortableJS never sees it -->
-      <div
-        v-if="tasks.length === 0"
-        class="pointer-events-none absolute inset-0 flex items-center justify-center rounded-lg border-2 border-dashed border-[rgba(130,143,163,0.25)]"
-      >
-        <span class="body-l select-none text-battleship-grey opacity-50">No tasks yet</span>
-      </div>
+      <Transition name="placeholder">
+        <div
+          v-if="tasks.length === 0"
+          class="pointer-events-none absolute inset-0 flex items-center justify-center rounded-lg border-2 border-dashed border-[rgba(130,143,163,0.25)]"
+        >
+          <span class="body-l select-none text-battleship-grey opacity-50">No tasks yet</span>
+        </div>
+      </Transition>
     </div>
   </div>
 </template>

@@ -148,3 +148,18 @@
 .scrollbar-custom::-webkit-scrollbar-corner {
   background: transparent;
 }
+
+/* ============================================================
+   Empty column placeholder fade + scale
+   ============================================================ */
+.placeholder-enter-active {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.placeholder-leave-active {
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.placeholder-enter-from,
+.placeholder-leave-to {
+  opacity: 0;
+  transform: scale(0.92);
+}
