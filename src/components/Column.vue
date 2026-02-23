@@ -34,26 +34,27 @@ function onAdd(evt: { newIndex?: number }) {
       <span class="inline-block size-4 shrink-0 rounded-full" :style="{ backgroundColor: dotColor }" />
       {{ column.name }} ({{ column.tasks.length }})
     </h2>
-    <VueDraggable
-      v-model="tasks"
-      group="tasks"
-      :animation="200"
-      ghost-class="sortable-ghost"
-      chosen-class="sortable-chosen"
-      drag-class="sortable-drag"
-      filter=".no-drag"
-      class="min-h-[120px] space-y-5"
-      @add="onAdd"
-    >
-      <!-- Empty placeholder — not draggable -->
+    <!-- Wrapper provides the positioning context for the empty placeholder -->
+    <div class="relative" :class="tasks.length === 0 ? 'min-h-[120px]' : ''">
+      <VueDraggable
+        v-model="tasks"
+        group="tasks"
+        :animation="200"
+        ghost-class="sortable-ghost"
+        class="space-y-5"
+        :class="tasks.length === 0 ? 'min-h-[120px]' : ''"
+        @add="onAdd"
+      >
+        <TaskCard v-for="task in tasks" :key="task.id ?? task.title" :task />
+      </VueDraggable>
+      <!-- Placeholder sits outside VueDraggable so SortableJS never sees it -->
       <div
         v-if="tasks.length === 0"
-        class="no-drag flex h-[120px] items-center justify-center rounded-lg border-2 border-dashed border-[rgba(130,143,163,0.25)]"
+        class="pointer-events-none absolute inset-0 flex items-center justify-center rounded-lg border-2 border-dashed border-[rgba(130,143,163,0.25)]"
       >
         <span class="body-l select-none text-battleship-grey opacity-50">No tasks yet</span>
       </div>
-      <TaskCard v-for="task in tasks" :key="task.id ?? task.title" :task />
-    </VueDraggable>
+    </div>
   </div>
 </template>
 
