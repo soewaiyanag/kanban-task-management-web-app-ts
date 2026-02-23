@@ -26,7 +26,7 @@ const handleTransitionEnd = () => {
 
 <template>
   <div
-    class="sticky top-[calc(100vh-6rem+1px)] min-h-[calc(100vh-6rem+1px)]"
+    class="sticky top-[calc(100vh-6rem+1px)] z-10 min-h-[calc(100vh-6rem+1px)]"
   >
     <div
       :class="sidebarStore.visible ? 'w-[300px] px-6 opacity-100' : 'w-0 opacity-0'"
