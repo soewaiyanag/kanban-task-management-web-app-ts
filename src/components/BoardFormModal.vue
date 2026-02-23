@@ -100,11 +100,13 @@ function submit() {
               :key="col.id"
               class="flex items-center gap-4"
             >
-              <input
-                v-model="col.name"
-                type="text"
-                class="body-l h-10 flex-1 rounded-[4px] border border-[rgba(130,143,163,0.25)] bg-white px-4 text-midnight placeholder:opacity-25 focus:border-purple-heart focus:outline-none dark:bg-charcoal dark:text-white dark:placeholder:text-white"
-              />
+              <div class="flex-1 min-w-0">
+                <input
+                  v-model="col.name"
+                  type="text"
+                  class="body-l h-10 w-full rounded-[4px] border border-[rgba(130,143,163,0.25)] bg-white px-4 text-midnight placeholder:opacity-25 focus:border-purple-heart focus:outline-none dark:bg-charcoal dark:text-white dark:placeholder:text-white"
+                />
+              </div>
               <button
                 type="button"
                 class="shrink-0 opacity-60 transition-opacity hover:opacity-100"
