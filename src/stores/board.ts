@@ -1,7 +1,9 @@
 import { defineStore } from "pinia";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { initialState } from "@/constants/initialState";
 import type { Board, Task } from "@/types/board";
+
+const STORAGE_KEY = "kanban-boards";
 
 export type { Subtask, Task, Column, Board } from "@/types/board";
 
@@ -20,8 +22,16 @@ export const useBoardStore = defineStore("board", () => {
     }));
   }
 
+  function loadBoards(): Board[] {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) return seedIds(JSON.parse(saved));
+    } catch {}
+    return seedIds(JSON.parse(JSON.stringify(initialState)));
+  }
+
   // Reactive state properties
-  const boards = ref<Board[]>(seedIds(JSON.parse(JSON.stringify(initialState))));
+  const boards = ref<Board[]>(loadBoards());
   const currentBoardIndex = ref<number>(0);
   const selectedTask = ref<Task | null>(null);
   const taskFormMode = ref<"add" | "edit" | null>(null);
@@ -167,6 +177,11 @@ export const useBoardStore = defineStore("board", () => {
     selectedTask.value = null;
     deleteTarget.value = null;
   }
+
+  // Persist boards to localStorage on every change
+  watch(boards, (val) => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(val));
+  }, { deep: true });
 
   return {
     boards,
