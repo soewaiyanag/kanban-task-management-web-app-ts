@@ -55,12 +55,16 @@ function submit() {
   }
   if (form.subtasks.some((s) => !s.title.trim())) return;
   if (isEdit.value && selectedTask.value) {
+    const statusChanged = selectedTask.value.status !== form.status;
     Object.assign(selectedTask.value, {
       title: form.title,
       description: form.description,
       subtasks: form.subtasks,
       status: form.status,
     });
+    if (statusChanged) {
+      boardStore.changeTaskStatus(selectedTask.value, form.status);
+    }
   } else {
     boardStore.addTask({
       title: form.title,

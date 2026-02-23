@@ -6,10 +6,17 @@ import { useBoardStore } from "@/stores/board";
 const boardStore = useBoardStore();
 const { selectedTask: task, currentBoard } = storeToRefs(boardStore);
 const isEllipsisOpen = ref(false);
+const isStatusOpen = ref(false);
 
 const completedCount = computed(
   () => task.value?.subtasks.filter((s) => s.isCompleted).length ?? 0,
 );
+
+function selectStatus(colName: string) {
+  if (!task.value) return;
+  boardStore.changeTaskStatus(task.value, colName);
+  isStatusOpen.value = false;
+}
 </script>
 
 <template>
@@ -26,6 +33,7 @@ const completedCount = computed(
         <!-- Header -->
         <div class="flex items-start justify-between gap-6">
           <h2 class="heading-l text-midnight dark:text-white">{{ task.title }}</h2>
+          <!-- Ellipsis menu -->
           <div class="relative mt-1 shrink-0">
             <div
               v-if="isEllipsisOpen"
@@ -102,25 +110,46 @@ const completedCount = computed(
           </div>
         </div>
 
-        <!-- Current Status -->
+        <!-- Current Status — custom dropdown -->
         <div class="mt-6">
           <p class="body-m mb-4 text-battleship-grey dark:text-white">Current Status</p>
           <div class="relative">
-            <select
-              v-model="task.status"
-              class="body-l w-full cursor-pointer appearance-none rounded-[4px] border border-[rgba(130,143,163,0.25)] bg-white px-4 py-3 text-midnight focus:border-purple-heart focus:outline-none dark:bg-charcoal dark:text-white"
+            <!-- Backdrop to close on outside click -->
+            <div
+              v-if="isStatusOpen"
+              class="fixed inset-0 z-10"
+              @click="isStatusOpen = false"
+            />
+            <!-- Trigger button -->
+            <button
+              type="button"
+              class="body-l flex h-10 w-full cursor-pointer items-center justify-between rounded-[4px] border bg-white px-4 text-midnight transition-colors focus:outline-none dark:bg-charcoal dark:text-white"
+              :class="isStatusOpen ? 'border-purple-heart' : 'border-[rgba(130,143,163,0.25)] hover:border-purple-heart'"
+              @click="isStatusOpen = !isStatusOpen"
             >
-              <option
+              <span>{{ task.status }}</span>
+              <img
+                alt=""
+                src="/assets/icons/icon-chevron-down.svg"
+                class="transition-transform duration-200"
+                :class="isStatusOpen ? 'rotate-180' : ''"
+              />
+            </button>
+            <!-- Dropdown list -->
+            <div
+              v-if="isStatusOpen"
+              class="absolute left-0 right-0 top-full z-20 mt-2 rounded-lg bg-white py-4 shadow-[0_10px_20px_rgba(54,78,126,0.25)] dark:bg-gunmetal"
+            >
+              <button
                 v-for="col in currentBoard.columns"
                 :key="col.name"
-                :value="col.name"
-              >{{ col.name }}</option>
-            </select>
-            <img
-              alt=""
-              class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2"
-              src="/assets/icons/icon-chevron-down.svg"
-            />
+                type="button"
+                class="body-l w-full px-4 py-2 text-left text-battleship-grey transition-colors hover:text-purple-heart"
+                @click="selectStatus(col.name)"
+              >
+                {{ col.name }}
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -78,6 +78,21 @@ export const useBoardStore = defineStore("board", () => {
     selectedTask.value = null;
   }
 
+  // Move task to a different column (also updates its status field)
+  function changeTaskStatus(task: Task, newStatus: string) {
+    const board = boards.value[currentBoardIndex.value];
+    const sourceCol = board.columns.find((col) => col.tasks.includes(task));
+    const targetCol = board.columns.find((col) => col.name === newStatus) ?? board.columns[0];
+    if (!sourceCol || sourceCol === targetCol) {
+      task.status = newStatus;
+      return;
+    }
+    const idx = sourceCol.tasks.indexOf(task);
+    if (idx !== -1) sourceCol.tasks.splice(idx, 1);
+    task.status = newStatus;
+    targetCol.tasks.push(task);
+  }
+
   // Add task
   function addTask(task: Task) {
     const board = boards.value[currentBoardIndex.value];
@@ -174,6 +189,7 @@ export const useBoardStore = defineStore("board", () => {
     openAddBoard,
     openEditBoard,
     closeBoardForm,
+    changeTaskStatus,
     addBoard,
     saveBoard,
     openDeleteBoard,
