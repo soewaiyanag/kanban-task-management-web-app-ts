@@ -29,20 +29,20 @@ function onAdd(evt: { newIndex?: number }) {
 </script>
 
 <template>
-  <div class="w-72">
+  <div :class="['w-72', tasks.length === 0 && 'self-stretch flex flex-col']">
     <h2 class="heading-s mb-5 flex items-center gap-3 uppercase text-battleship-grey">
       <span class="inline-block size-4 shrink-0 rounded-full" :style="{ backgroundColor: dotColor }" />
       {{ column.name }} ({{ column.tasks.length }})
     </h2>
-    <!-- Wrapper provides the positioning context for the empty placeholder -->
-    <div class="relative" :class="tasks.length === 0 ? 'min-h-[120px]' : ''">
+    <!-- Wrapper provides positioning context; flex-1 when empty to fill remaining column height -->
+    <div :class="['relative', tasks.length === 0 ? 'flex-1' : '']">
       <VueDraggable
         v-model="tasks"
         group="tasks"
         :animation="200"
         ghost-class="sortable-ghost"
         class="space-y-5"
-        :class="tasks.length === 0 ? 'min-h-[120px]' : ''"
+        :class="tasks.length === 0 ? 'h-full' : ''"
         @add="onAdd"
       >
         <TaskCard v-for="task in tasks" :key="task.id ?? task.title" :task />
