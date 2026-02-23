@@ -153,13 +153,16 @@
    Empty column placeholder fade + scale
    ============================================================ */
 .placeholder-enter-active {
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transition: opacity 0.3s ease, filter 0.3s ease;
 }
 .placeholder-leave-active {
-  transition: opacity 0.15s ease, transform 0.15s ease;
+  transition: opacity 0.2s ease, filter 0.2s ease;
 }
-.placeholder-enter-from,
+.placeholder-enter-from {
+  opacity: 0;
+  filter: blur(6px);
+}
 .placeholder-leave-to {
   opacity: 0;
-  transform: scale(0.92);
+  filter: blur(4px);
 }
