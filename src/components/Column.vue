@@ -18,7 +18,10 @@ const dotColor = computed(() => COLUMN_COLORS[props.index % COLUMN_COLORS.length
 const tasks = computed({
   get: () => column.value.tasks,
   set: (val) => {
-    column.value.tasks = val;
+    const current = column.value.tasks;
+    if (current === val) return;
+    // Mutate in-place so VueDraggable's internal SortableJS reference stays valid
+    current.splice(0, current.length, ...val);
   },
 });
 
@@ -29,20 +32,19 @@ function onAdd(evt: { newIndex?: number }) {
 </script>
 
 <template>
-  <div :class="['w-72', tasks.length === 0 && 'self-stretch flex flex-col']">
+  <div class="w-72 self-stretch flex flex-col">
     <h2 class="heading-s mb-5 flex items-center gap-3 uppercase text-battleship-grey">
       <span class="inline-block size-4 shrink-0 rounded-full" :style="{ backgroundColor: dotColor }" />
       {{ column.name }} ({{ column.tasks.length }})
     </h2>
-    <!-- Wrapper provides positioning context; flex-1 when empty to fill remaining column height -->
-    <div :class="['relative', tasks.length === 0 ? 'flex-1' : '']">
+    <!-- flex-1 so VueDraggable always fills remaining column height — required for cross-column drops -->
+    <div class="relative flex-1">
       <VueDraggable
         v-model="tasks"
         group="tasks"
         :animation="200"
         ghost-class="sortable-ghost"
-        class="space-y-5"
-        :class="tasks.length === 0 ? 'h-full' : ''"
+        class="space-y-5 h-full"
         @add="onAdd"
       >
         <TaskCard v-for="task in tasks" :key="task.id ?? task.title" :task />
