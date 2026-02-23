@@ -7,10 +7,24 @@ const boardStore = useBoardStore();
 const { selectedTask: task, currentBoard } = storeToRefs(boardStore);
 const isEllipsisOpen = ref(false);
 const isStatusOpen = ref(false);
+const statusButtonRef = ref<HTMLElement | null>(null);
+const dropdownStyle = ref<Record<string, string>>({});
 
 const completedCount = computed(
   () => task.value?.subtasks.filter((s) => s.isCompleted).length ?? 0,
 );
+
+function openStatusDropdown() {
+  if (statusButtonRef.value) {
+    const rect = statusButtonRef.value.getBoundingClientRect();
+    dropdownStyle.value = {
+      top: `${rect.bottom + 8}px`,
+      left: `${rect.left}px`,
+      width: `${rect.width}px`,
+    };
+  }
+  isStatusOpen.value = true;
+}
 
 function selectStatus(colName: string) {
   if (!task.value) return;
@@ -119,14 +133,15 @@ function selectStatus(colName: string) {
             <div class="relative">
               <div
                 v-if="isStatusOpen"
-                class="fixed inset-0 z-10"
+                class="fixed inset-0 z-[59]"
                 @click="isStatusOpen = false"
               />
               <button
+                ref="statusButtonRef"
                 type="button"
                 class="body-l flex h-10 w-full cursor-pointer items-center justify-between rounded-[4px] border bg-white px-4 text-midnight transition-colors focus:outline-none dark:bg-charcoal dark:text-white"
                 :class="isStatusOpen ? 'border-purple-heart' : 'border-[rgba(130,143,163,0.25)] hover:border-purple-heart'"
-                @click="isStatusOpen = !isStatusOpen"
+                @click="openStatusDropdown"
               >
                 <span>{{ task.status }}</span>
                 <img
@@ -136,22 +151,25 @@ function selectStatus(colName: string) {
                   :class="isStatusOpen ? 'rotate-180' : ''"
                 />
               </button>
-              <Transition name="dropdown">
-                <div
-                  v-if="isStatusOpen"
-                  class="absolute left-0 right-0 top-full z-20 mt-2 rounded-lg bg-white py-4 shadow-[0_10px_20px_rgba(54,78,126,0.25)] dark:bg-gunmetal"
-                >
-                  <button
-                    v-for="col in currentBoard.columns"
-                    :key="col.name"
-                    type="button"
-                    class="body-l w-full px-4 py-2 text-left text-battleship-grey transition-colors hover:text-purple-heart"
-                    @click="selectStatus(col.name)"
+              <Teleport to="body">
+                <Transition name="dropdown">
+                  <div
+                    v-if="isStatusOpen"
+                    :style="dropdownStyle"
+                    class="fixed z-[60] rounded-lg bg-white py-4 shadow-[0_10px_20px_rgba(54,78,126,0.25)] dark:bg-gunmetal"
                   >
-                    {{ col.name }}
-                  </button>
-                </div>
-              </Transition>
+                    <button
+                      v-for="col in currentBoard.columns"
+                      :key="col.name"
+                      type="button"
+                      class="body-l w-full px-4 py-2 text-left text-battleship-grey transition-colors hover:text-purple-heart"
+                      @click="selectStatus(col.name)"
+                    >
+                      {{ col.name }}
+                    </button>
+                  </div>
+                </Transition>
+              </Teleport>
             </div>
           </div>
         </div>
