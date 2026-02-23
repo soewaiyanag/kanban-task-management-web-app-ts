@@ -24,7 +24,7 @@ const { currentBoard } = storeToRefs(boardStore);
   </div>
   <div
     v-else
-    class="scrollbar-custom grid max-h-[calc(100vh-4rem+1px)] min-w-0 grid-flow-col items-start justify-start gap-5 overflow-scroll p-6 md:max-h-[calc(100vh-6rem+1px)]"
+    class="scrollbar-custom grid h-[calc(100vh-4rem)] min-w-0 grid-flow-col items-start justify-start gap-5 overflow-scroll p-6 md:h-[calc(100vh-6rem)]"
   >
     <Column
       v-for="(_, index) in currentBoard.columns"
