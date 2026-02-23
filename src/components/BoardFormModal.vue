@@ -62,13 +62,14 @@ function submit() {
 
 <template>
   <Teleport to="body">
-    <div
-      v-if="boardFormMode"
-      class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
-      @click="boardStore.closeBoardForm()"
-    >
+    <Transition name="overlay">
       <div
-        class="w-full max-h-[90vh] overflow-y-auto rounded-[6px] bg-white p-6 dark:bg-charcoal md:w-[480px] md:p-8"
+        v-if="boardFormMode"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
+        @click="boardStore.closeBoardForm()"
+      >
+      <div
+        class="modal-card w-full max-h-[90vh] overflow-y-auto rounded-[6px] bg-white p-6 dark:bg-charcoal md:w-[480px] md:p-8"
         @click.stop
       >
         <!-- Heading -->
@@ -134,6 +135,7 @@ function submit() {
           {{ isEdit ? "Save Changes" : "Create New Board" }}
         </button>
       </div>
-    </div>
+      </div>
+    </Transition>
   </Teleport>
 </template>

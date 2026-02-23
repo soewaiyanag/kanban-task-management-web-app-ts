@@ -28,13 +28,14 @@ function confirm() {
 
 <template>
   <Teleport to="body">
-    <div
-      v-if="deleteTarget"
-      class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
-      @click="boardStore.closeDelete()"
-    >
+    <Transition name="overlay">
       <div
-        class="w-full rounded-[6px] bg-white p-6 dark:bg-charcoal md:w-[480px] md:p-8"
+        v-if="deleteTarget"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
+        @click="boardStore.closeDelete()"
+      >
+      <div
+        class="modal-card w-full rounded-[6px] bg-white p-6 dark:bg-charcoal md:w-[480px] md:p-8"
         @click.stop
       >
         <h2 class="heading-l mb-6 text-red-orange">{{ title }}</h2>
@@ -56,6 +57,7 @@ function confirm() {
           </button>
         </div>
       </div>
-    </div>
+      </div>
+    </Transition>
   </Teleport>
 </template>

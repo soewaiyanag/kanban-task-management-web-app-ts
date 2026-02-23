@@ -75,6 +75,7 @@ const logoWidth = computed(() => sidebarStore.visible ? "md:w-[300px]" : "md:w-[
               src="/assets/icons/icon-vertical-ellipsis.svg"
             />
           </button>
+          <Transition name="dropdown">
           <div
             v-if="isEllipsisOpen"
             class="absolute right-0 top-full z-10 mt-4 w-48 rounded-lg bg-white py-4 shadow-[0_10px_20px_rgba(54,78,126,0.25)] dark:bg-gunmetal"
@@ -92,6 +93,7 @@ const logoWidth = computed(() => sidebarStore.visible ? "md:w-[300px]" : "md:w-[
               Delete Board
             </button>
           </div>
+          </Transition>
         </div>
       </div>
     </div>
@@ -99,13 +101,14 @@ const logoWidth = computed(() => sidebarStore.visible ? "md:w-[300px]" : "md:w-[
 
   <!-- Mobile board selector overlay -->
   <Teleport to="body">
-    <div
-      v-if="isBoardMenuOpen"
-      class="fixed inset-x-0 bottom-0 top-16 z-40 bg-black/50 md:hidden"
-      @click="isBoardMenuOpen = false"
-    >
+    <Transition name="board-menu">
       <div
-        class="mx-auto mt-4 w-[264px] rounded-lg bg-white pb-4 shadow-[0_10px_20px_rgba(54,78,126,0.25)] dark:bg-charcoal"
+        v-if="isBoardMenuOpen"
+        class="fixed inset-x-0 bottom-0 top-16 z-40 bg-black/50 md:hidden"
+        @click="isBoardMenuOpen = false"
+      >
+      <div
+        class="board-menu-card mx-auto mt-4 w-[264px] rounded-lg bg-white pb-4 shadow-[0_10px_20px_rgba(54,78,126,0.25)] dark:bg-charcoal"
         @click.stop
       >
         <p class="heading-s mb-4 px-6 pt-4 uppercase text-battleship-grey">
@@ -132,6 +135,7 @@ const logoWidth = computed(() => sidebarStore.visible ? "md:w-[300px]" : "md:w-[
         </button>
         <ThemeSwitcher class="mx-4 mt-4" />
       </div>
-    </div>
+      </div>
+    </Transition>
   </Teleport>
 </template>
